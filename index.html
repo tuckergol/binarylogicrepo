@@ -1,15 +1,29 @@
+---
+layout: default
+title: Home
+---
+
 <!DOCTYPE html>
+
+<html>
+  <div style="font-size: 2em; text-align: center; font-weight: bold;">
+    Binary Basics
+  </div>
+</html>
+
 <html lang="en">
-<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Decimal to Binary (mini lesson)</title>
   <style>
     button {
-      width: 60px;
+      width: 100px;
       height: 60px;
-      font-size: 18px;
+      font-size: 22px;
       margin: 5px;
+      font-family: 'Fira Code', monospace;
+      background-color: #2b2e30;
+      color: #a3e334;
     }
 
     #decimal-display {
@@ -26,8 +40,6 @@
       margin-top: 10px;
     }
   </style>
-</head>
-<body>
 
 <div id="decimal-display"></div>
 
@@ -47,7 +59,7 @@
   }
 
   function updateDisplay() {
-    document.getElementById('decimal-display').textContent = `Represent ${targetDecimal} in binary:`;
+    document.getElementById('decimal-display').textContent = `Represent ${targetDecimal} in binary using 5 bits:`;
   }
 
   function generateBinaryButtons() {
@@ -85,7 +97,7 @@
     const playerDecimal = parseInt(playerBinary, 2);
 
     if (playerDecimal === targetDecimal) {
-      document.getElementById('success-message').textContent = 'Correct. You represented the number correctly.';
+      document.getElementById('success-message').textContent = 'Correct! You represented the number correctly.';
     } else {
       document.getElementById('success-message').textContent = 'Incorrect. Try again.';
     }
