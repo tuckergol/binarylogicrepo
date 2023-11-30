@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Decimal to Binary (mini lesson)</title>
+  <style>
+    button {
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+      margin: 5px;
+    }
+
+    #decimal-display {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    #binary-buttons {
+      display: flex;
+    }
+
+    #success-message {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="decimal-display"></div>
+
+<div id="binary-buttons"></div>
+
+<div id="success-message"></div>
+
+<script>
+  let targetDecimal;
+  let binaryButtons = [];
+
+  function generateRandomDecimal() {
+    return Math.floor(Math.random() * 32);
+  }
+
+  function updateDisplay() {
+    document.getElementById('decimal-display').textContent = `Represent ${targetDecimal} in binary:`;
+  }
+
+  function generateBinaryButtons() {
+    const binaryButtonsContainer = document.getElementById('binary-buttons');
+
+    binaryButtonsContainer.innerHTML = '';
+
+    for (let i = 4; i >= 0; i--) {
+      const button = document.createElement('button');
+      button.textContent = '0';
+      binaryButtonsContainer.appendChild(button);
+
+      button.addEventListener('click', function() {
+        button.textContent = button.textContent === '0' ? '1' : '0';
+        checkGuess();
+      });
+
+      binaryButtons.push(button);
+    }
+  }
+
+  function checkGuess() {
+    const playerBinary = binaryButtons.map(button => button.textContent).join('');
+    const playerDecimal = parseInt(playerBinary, 2);
+
+    if (playerDecimal === targetDecimal) {
+      document.getElementById('success-message').textContent = 'Congratulations! You represented the number correctly in binary!';
+      setTimeout(() => {
+        document.getElementById('success-message').textContent = '';
+        newRound();
+      }, 4000);
+    }
+  }
+
+  function newRound() {
+    targetDecimal = generateRandomDecimal();
+    updateDisplay();
+    resetBinaryButtons();
+  }
+
+  function resetBinaryButtons() {
+    binaryButtons.forEach(button => {
+      button.textContent = '0';
+    });
+  }
+
+  newRound();
+  generateBinaryButtons();
+
+</script>
+
+</body>
+</html>
