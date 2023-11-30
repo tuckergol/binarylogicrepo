@@ -6,8 +6,8 @@
   <title>Decimal to Binary (mini lesson)</title>
   <style>
     button {
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       font-size: 18px;
       margin: 5px;
     }
@@ -34,6 +34,9 @@
 <div id="binary-buttons"></div>
 
 <button onclick="newRound()">New</button>
+<button onclick="checkAnswer()">Check</button>
+
+<div id="success-message"></div>
 
 <script>
   let targetDecimal;
@@ -75,6 +78,17 @@
     binaryButtons.forEach(button => {
       button.textContent = '0';
     });
+  }
+
+  function checkAnswer() {
+    const playerBinary = binaryButtons.map(button => button.textContent).join('');
+    const playerDecimal = parseInt(playerBinary, 2);
+
+    if (playerDecimal === targetDecimal) {
+      document.getElementById('success-message').textContent = 'Correct. You represented the number correctly.';
+    } else {
+      document.getElementById('success-message').textContent = 'Incorrect. Try again.';
+    }
   }
 
   newRound();
