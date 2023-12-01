@@ -45,7 +45,8 @@ title: Home
       display: flex;
     }
 
-    #success-message {
+    #success-message,
+    #error-message {
       font-size: 18px;
       margin-top: 10px;
     }
@@ -56,8 +57,7 @@ title: Home
   <div id="lesson-container">
     <h1 style="text-align: center;">Learn the Binary Basics</h1>
     <p>
-      Binary is a numerical system that uses only two digits: 0 and 1. Binary serves a major part in the foundation of all digital systems
-      (most notably--computers!). In this mini lesson, you can learn and practice binary and binary decimal conversion. In Binary, each digit is called a "bit," and it represents a power of 2.
+      Binary is a numerical system that uses only two digits: 0 and 1. It is a boolean system, meaning it is built upon "true" vs. "false," with 0 and 1 being represented respectively. Binary serves a major part in the foundation of all digital systems (most notably--computers!). In this mini lesson, you can learn and practice binary and binary decimal conversion. In Binary, each digit is called a "bit," and it represents a power of 2.
     </p>
 
     <h2>Binary Math Basics:</h2>
@@ -74,7 +74,7 @@ title: Home
     </ul>
 
     <p>
-      When counting in binary, you start from the right, and each digit represents a higher power of 2 as you move to the left.
+      When counting in binary, you start from the right, and each digit represents a higher power of 2 as you move to the left. Think of it as accounting for the numbers you need in order to create a sum up to a given number.
     </p>
 
     <div id="decimal-display"></div>
@@ -84,11 +84,14 @@ title: Home
     <button onclick="checkAnswer()">Check</button>
 
     <div id="success-message"></div>
+    <div id="error-message"></div>
   </div>
 
   <script>
     let targetDecimal;
     let binaryButtons = [];
+    let successMessage = document.getElementById('success-message');
+    let errorMessage = document.getElementById('error-message');
 
     function generateRandomDecimal() {
       return Math.floor(Math.random() * 32);
@@ -120,6 +123,7 @@ title: Home
       targetDecimal = generateRandomDecimal();
       updateDisplay();
       resetBinaryButtons();
+      resetMessages();
     }
 
     function resetBinaryButtons() {
@@ -128,14 +132,21 @@ title: Home
       });
     }
 
+    function resetMessages() {
+      successMessage.textContent = '';
+      errorMessage.textContent = '';
+    }
+
     function checkAnswer() {
       const playerBinary = binaryButtons.map(button => button.textContent).join('');
       const playerDecimal = parseInt(playerBinary, 2);
 
       if (playerDecimal === targetDecimal) {
-        document.getElementById('success-message').textContent = 'Correct! You represented the number correctly.';
+        successMessage.textContent = 'Correct! You represented the number correctly.';
+        errorMessage.textContent = '';
       } else {
-        document.getElementById('success-message').textContent = 'Incorrect. Try again.';
+        errorMessage.textContent = 'Incorrect. Try again.';
+        successMessage.textContent = '';
       }
     }
 
@@ -143,3 +154,5 @@ title: Home
     generateBinaryButtons();
   </script>
 </body>
+
+</html>
