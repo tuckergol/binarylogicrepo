@@ -1,14 +1,91 @@
 ---
 layout: default
-permalink: /blogs
-title: Blogs
+permalink: /sudoku
+title: 4x4 Binary Game
 ---
 
-<!DOCTYPE html>
 <html>
   <div style="font-size: 2em; text-align: center; font-weight: bold;">
     4x4 Binary Game
   </div>
 </html>
 
-put code here for 4x4-type game
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary Sudoku (4x4)</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            margin: 20px;
+        }
+
+        td {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            border: 1px solid #000;
+        }
+    </style>
+    <h1>Binary Sudoku (4x4)</h1>
+    <table id="sudoku-board"></table>
+    <script>
+        // Function to generate a solvable binary sudoku puzzle
+        function generateBoard() {
+            // Your generation logic here
+            // You can use the code from the previous Python implementation or any other logic
+        }
+
+        // Function to initialize the game board
+        function initializeBoard() {
+            const board = generateBoard();
+
+            const table = document.getElementById('sudoku-board');
+            table.innerHTML = '';
+
+            for (let i = 0; i < 4; i++) {
+                const row = table.insertRow();
+
+                for (let j = 0; j < 4; j++) {
+                    const cell = row.insertCell();
+                    const value = board[i][j];
+
+                    if (value !== 0) {
+                        cell.textContent = value;
+                        cell.classList.add('fixed');
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'number';
+                        input.min = '0';
+                        input.max = '1';
+                        input.addEventListener('input', () => validateInput(input));
+                        cell.appendChild(input);
+                    }
+                }
+            }
+        }
+
+        // Function to validate user input
+        function validateInput(input) {
+            const value = parseInt(input.value);
+            if (isNaN(value) || value < 0 || value > 1) {
+                input.value = '';
+            }
+        }
+
+        // Function to check if the board is complete
+        function isBoardComplete() {
+            const inputs = document.querySelectorAll('#sudoku-board input');
+            return Array.from(inputs).every(input => input.value !== '');
+        }
+
+        // Function to display a congratulations message
+        function displayCongratulations() {
+            alert('Congratulations! You solved the puzzle.');
+        }
+
+        // Initialize the board on page load
+        window.onload = initializeBoard;
+    </script>
+</html>
