@@ -4,88 +4,34 @@ permalink: /sudoku
 title: 4x4 Binary Game
 ---
 
-<html>
-  <div style="font-size: 2em; text-align: center; font-weight: bold;">
-    4x4 Binary Game
-  </div>
-</html>
+%%js
 
-<!DOCTYPE html>
-<html lang="en">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Binary Sudoku (4x4)</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            margin: 20px;
-        }
+function generateBoard() {
+  const size = 4;
+  const board = Array.from({ length: size }, () => Array(size).fill(0));
 
-        td {
-            width: 40px;
-            height: 40px;
-            text-align: center;
-            border: 1px solid #000;
-        }
-    </style>
-    <h1>Binary Sudoku (4x4)</h1>
-    <table id="sudoku-board"></table>
-    <script>
-        // Function to generate a solvable binary sudoku puzzle
-        function generateBoard() {
-            // Your generation logic here
-            // You can use the code from the previous Python implementation or any other logic
-        }
+  // Fill the main diagonal with random values (0 or 1)
+  for (let i = 0; i < size; i++) {
+      board[i][i] = Math.floor(Math.random() * 2);
+  }
 
-        // Function to initialize the game board
-        function initializeBoard() {
-            const board = generateBoard();
+  // Shuffle rows and columns to create a solvable puzzle
+  for (let i = 0; i < size; i++) {
+      const randomRow = Math.floor(Math.random() * size);
+      const randomCol = Math.floor(Math.random() * size);
 
-            const table = document.getElementById('sudoku-board');
-            table.innerHTML = '';
+      // Swap rows
+      const tempRow = [...board[i]];
+      board[i] = [...board[randomRow]];
+      board[randomRow] = tempRow;
 
-            for (let i = 0; i < 4; i++) {
-                const row = table.insertRow();
+      // Swap columns
+      for (let j = 0; j < size; j++) {
+          const temp = board[j][i];
+          board[j][i] = board[j][randomCol];
+          board[j][randomCol] = temp;
+      }
+  }
 
-                for (let j = 0; j < 4; j++) {
-                    const cell = row.insertCell();
-                    const value = board[i][j];
-
-                    if (value !== 0) {
-                        cell.textContent = value;
-                        cell.classList.add('fixed');
-                    } else {
-                        const input = document.createElement('input');
-                        input.type = 'number';
-                        input.min = '0';
-                        input.max = '1';
-                        input.addEventListener('input', () => validateInput(input));
-                        cell.appendChild(input);
-                    }
-                }
-            }
-        }
-
-        // Function to validate user input
-        function validateInput(input) {
-            const value = parseInt(input.value);
-            if (isNaN(value) || value < 0 || value > 1) {
-                input.value = '';
-            }
-        }
-
-        // Function to check if the board is complete
-        function isBoardComplete() {
-            const inputs = document.querySelectorAll('#sudoku-board input');
-            return Array.from(inputs).every(input => input.value !== '');
-        }
-
-        // Function to display a congratulations message
-        function displayCongratulations() {
-            alert('Congratulations! You solved the puzzle.');
-        }
-
-        // Initialize the board on page load
-        window.onload = initializeBoard;
-    </script>
-</html>
+  return board;
+}
