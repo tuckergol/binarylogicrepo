@@ -4,18 +4,27 @@ title: Home
 ---
 
 <!DOCTYPE html>
-
-<html>
-  <div style="font-size: 2em; text-align: center; font-weight: bold;">
-    Binary Basics
-  </div>
-</html>
-
 <html lang="en">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Decimal to Binary (mini lesson)</title>
+  <title>Decimal to Binary (Mini Lesson)</title>
   <style>
+    body {
+      font-family: 'Fira Code', monospace;
+      background-color: #f0f0f0;
+      color: #a3e334;
+    }
+
+    #lesson-container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #383838;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
     button {
       width: 100px;
       height: 60px;
@@ -24,6 +33,7 @@ title: Home
       font-family: 'Fira Code', monospace;
       background-color: #2b2e30;
       color: #a3e334;
+      cursor: pointer;
     }
 
     #decimal-display {
@@ -35,78 +45,114 @@ title: Home
       display: flex;
     }
 
-    #success-message {
+    #success-message,
+    #error-message {
       font-size: 18px;
       margin-top: 10px;
     }
   </style>
+</head>
 
-<div id="decimal-display"></div>
+<body>
+  <div id="lesson-container">
+    <h1 style="text-align: center;">Learn the Binary Basics</h1>
+    <p>
+      Binary is a numerical system that uses only two digits: 0 and 1. It is a boolean system, meaning it is built upon "true" vs. "false," with 0 and 1 being represented respectively. Binary serves a major part in the foundation of all digital systems (most notably--computers!). In this mini lesson, you can learn and practice binary and binary decimal conversion. In Binary, each digit is called a "bit," and it represents a power of 2.
+    </p>
 
-<div id="binary-buttons"></div>
+    <h2>Binary Math Basics:</h2>
+    <p>
+      In decimal (our usual base-10 system), each digit represents a power of 10. Similarly, in binary:
+    </p>
 
-<button onclick="newRound()">New</button>
-<button onclick="checkAnswer()">Check</button>
+    <ul>
+      <li>1 bit represents 2<sup>0</sup> (1)</li>
+      <li>2 bits represent 2<sup>1</sup> (2)</li>
+      <li>3 bits represent 2<sup>2</sup> (4)</li>
+      <li>4 bits represent 2<sup>3</sup> (8)</li>
+      <li>5 bits represent 2<sup>4</sup> (16)</li>
+    </ul>
 
-<div id="success-message"></div>
+    <p>
+      When counting in binary, you start from the right, and each digit represents a higher power of 2 as you move to the left. Think of it as accounting for the numbers you need in order to create a sum up to a given number.
+    </p>
 
-<script>
-  let targetDecimal;
-  let binaryButtons = [];
+    <div id="decimal-display"></div>
+    <div id="binary-buttons"></div>
 
-  function generateRandomDecimal() {
-    return Math.floor(Math.random() * 32);
-  }
+    <button onclick="newRound()">New</button>
+    <button onclick="checkAnswer()">Check</button>
 
-  function updateDisplay() {
-    document.getElementById('decimal-display').textContent = `Represent ${targetDecimal} in binary using 5 bits:`;
-  }
+    <div id="success-message"></div>
+    <div id="error-message"></div>
+  </div>
 
-  function generateBinaryButtons() {
-    const binaryButtonsContainer = document.getElementById('binary-buttons');
+  <script>
+    let targetDecimal;
+    let binaryButtons = [];
+    let successMessage = document.getElementById('success-message');
+    let errorMessage = document.getElementById('error-message');
 
-    binaryButtonsContainer.innerHTML = '';
+    function generateRandomDecimal() {
+      return Math.floor(Math.random() * 32);
+    }
 
-    for (let i = 4; i >= 0; i--) {
-      const button = document.createElement('button');
-      button.textContent = '0';
-      binaryButtonsContainer.appendChild(button);
+    function updateDisplay() {
+      document.getElementById('decimal-display').textContent = `Represent ${targetDecimal} in binary using 5 bits:`;
+    }
 
-      button.addEventListener('click', function() {
-        button.textContent = button.textContent === '0' ? '1' : '0';
+    function generateBinaryButtons() {
+      const binaryButtonsContainer = document.getElementById('binary-buttons');
+
+      binaryButtonsContainer.innerHTML = '';
+
+      for (let i = 4; i >= 0; i--) {
+        const button = document.createElement('button');
+        button.textContent = '0';
+        binaryButtonsContainer.appendChild(button);
+
+        button.addEventListener('click', function() {
+          button.textContent = button.textContent === '0' ? '1' : '0';
+        });
+
+        binaryButtons.push(button);
+      }
+    }
+
+    function newRound() {
+      targetDecimal = generateRandomDecimal();
+      updateDisplay();
+      resetBinaryButtons();
+      resetMessages();
+    }
+
+    function resetBinaryButtons() {
+      binaryButtons.forEach(button => {
+        button.textContent = '0';
       });
-
-      binaryButtons.push(button);
     }
-  }
 
-  function newRound() {
-    targetDecimal = generateRandomDecimal();
-    updateDisplay();
-    resetBinaryButtons();
-  }
-
-  function resetBinaryButtons() {
-    binaryButtons.forEach(button => {
-      button.textContent = '0';
-    });
-  }
-
-  function checkAnswer() {
-    const playerBinary = binaryButtons.map(button => button.textContent).join('');
-    const playerDecimal = parseInt(playerBinary, 2);
-
-    if (playerDecimal === targetDecimal) {
-      document.getElementById('success-message').textContent = 'Correct! You represented the number correctly.';
-    } else {
-      document.getElementById('success-message').textContent = 'Incorrect. Try again.';
+    function resetMessages() {
+      successMessage.textContent = '';
+      errorMessage.textContent = '';
     }
-  }
 
-  newRound();
-  generateBinaryButtons();
+    function checkAnswer() {
+      const playerBinary = binaryButtons.map(button => button.textContent).join('');
+      const playerDecimal = parseInt(playerBinary, 2);
 
-</script>
+      if (playerDecimal === targetDecimal) {
+        successMessage.textContent = 'Correct! You represented the number correctly.';
+        errorMessage.textContent = '';
+      } else {
+        errorMessage.textContent = 'Incorrect. Try again.';
+        successMessage.textContent = '';
+      }
+    }
 
+    newRound();
+    generateBinaryButtons();
+  </script>
 </body>
+
 </html>
