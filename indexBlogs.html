@@ -4,34 +4,111 @@ permalink: /sudoku
 title: 4x4 Binary Game
 ---
 
-%%js
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary Sudoku (4x4)</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            margin: 20px;
+        }
 
-function generateBoard() {
-  const size = 4;
-  const board = Array.from({ length: size }, () => Array(size).fill(0));
+        td {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            border: 1px solid #000;
+        }
 
-  // Fill the main diagonal with random values (0 or 1)
-  for (let i = 0; i < size; i++) {
-      board[i][i] = Math.floor(Math.random() * 2);
-  }
+        input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            text-align: center;
+            font-size: 1.2em;
+        }
 
-  // Shuffle rows and columns to create a solvable puzzle
-  for (let i = 0; i < size; i++) {
-      const randomRow = Math.floor(Math.random() * size);
-      const randomCol = Math.floor(Math.random() * size);
+        .fixed {
+            background-color: #eee;
+        }
+    </style>
+    <table id="sudoku-board"></table>
+    <script>
+        function generateBoard() {
+            const size = 4;
+            const board = Array.from({ length: size }, () => Array(size).fill(0));
 
-      // Swap rows
-      const tempRow = [...board[i]];
-      board[i] = [...board[randomRow]];
-      board[randomRow] = tempRow;
+            for (let i = 0; i < size; i++) {
+                board[i][i] = Math.floor(Math.random() * 2);
+            }
 
-      // Swap columns
-      for (let j = 0; j < size; j++) {
-          const temp = board[j][i];
-          board[j][i] = board[j][randomCol];
-          board[j][randomCol] = temp;
-      }
-  }
+            for (let i = 0; i < size; i++) {
+                const randomRow = Math.floor(Math.random() * size);
+                const randomCol = Math.floor(Math.random() * size);
 
-  return board;
-}
+                const tempRow = [...board[i]];
+                board[i] = [...board[randomRow]];
+                board[randomRow] = tempRow;
+
+                for (let j = 0; j < size; j++) {
+                    const temp = board[j][i];
+                    board[j][i] = board[j][randomCol];
+                    board[j][randomCol] = temp;
+                }
+            }
+
+            return board;
+        }
+
+        function initializeBoard() {
+            const board = generateBoard();
+            const table = document.getElementById('sudoku-board');
+            table.innerHTML = '';
+
+            for (let i = 0; i < 4; i++) {
+                const row = table.insertRow();
+
+                for (let j = 0; j < 4; j++) {
+                    const cell = row.insertCell();
+                    const value = board[i][j];
+
+                    if (value !== 0) {
+                        cell.textContent = value;
+                        cell.classList.add('fixed');
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'number';
+                        input.min = '0';
+                        input.max = '1';
+                        input.addEventListener('input', () => validateInput(input));
+                        cell.appendChild(input);
+                    }
+                }
+            }
+        }
+
+        function validateInput(input) {
+            const value = parseInt(input.value);
+            if (isNaN(value) || value < 0 || value > 1) {
+                input.value = '';
+            }
+
+            if (isBoardComplete()) {
+                displayCongratulations();
+            }
+        }
+
+        function isBoardComplete() {
+            const inputs = document.querySelectorAll('#sudoku-board input');
+            return Array.from(inputs).every(input => input.value !== '');
+        }
+
+        function displayCongratulations() {
+            alert('Congratulations! You solved the puzzle.');
+        }
+
+        window.onload = initializeBoard;
+    </script>
+</html>
