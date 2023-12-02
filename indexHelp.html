@@ -4,4 +4,93 @@ permalink: /colorgame
 title: RGB Color Game
 ---
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toggle Grid</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: Arial, sans-serif;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(4, 50px);
+      gap: 5px;
+    }
+
+    .tile {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .number-display {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="grid-container" id="gridContainer"></div>
+<div class="number-display" id="numberDisplay"></div>
+
+<script>
+  const gridContainer = document.getElementById('gridContainer');
+  const numberDisplay = document.getElementById('numberDisplay');
+  let gridValues = Array.from({ length: 4 }, () => Array(4).fill(0));
+
+  function generateRandomValue() {
+    return Math.round(Math.random());
+  }
+
+  function updateGrid() {
+    gridContainer.innerHTML = '';
+    gridValues.forEach((row, rowIndex) => {
+      row.forEach((value, colIndex) => {
+        const tile = document.createElement('div');
+        tile.classList.add('tile');
+        tile.style.backgroundColor = value === 0 ? 'blue' : 'red';
+        tile.textContent = value.toString();
+        tile.addEventListener('click', () => toggleValue(rowIndex, colIndex));
+        gridContainer.appendChild(tile);
+      });
+    });
+  }
+
+  function toggleValue(row, col) {
+    gridValues[row][col] = 1 - gridValues[row][col];
+    updateGrid();
+    updateNumberDisplay();
+  }
+
+  function updateNumberDisplay() {
+    const decimalValues = gridValues.map(row => parseInt(row.join(''), 2));
+    numberDisplay.textContent = `Decimal Values: ${decimalValues.join(', ')}`;
+  }
+
+  function initializeGrid() {
+    gridValues = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => generateRandomValue()));
+    updateGrid();
+    updateNumberDisplay();
+  }
+
+  initializeGrid();
+</script>
+
+</body>
+</html>
+
+
 rgb change color game
