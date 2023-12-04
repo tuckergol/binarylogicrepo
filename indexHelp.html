@@ -4,43 +4,58 @@ permalink: /colorgame
 title: Binary Color Game
 ---
 
-<!-- Your HTML file -->
-
 <!DOCTYPE html>
 <html lang="en">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Binary Color Game</title>
   <style>
-    /* Your CSS styles remain unchanged */
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: Arial, sans-serif;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(4, 50px);
+      gap: 5px;
+    }
+
+    .tile {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .number-display {
+      margin-top: 20px;
+      font-size: 18px;
+    }
   </style>
 
 <div class="grid-container" id="gridContainer"></div>
 <div class="number-display" id="numberDisplay"></div>
 
-<!-- JavaScript code with comments -->
 <script>
-  // Get references to HTML elements
   const gridContainer = document.getElementById('gridContainer');
   const numberDisplay = document.getElementById('numberDisplay');
-
-  // Initialize the grid values as a 4x4 array filled with zeros
   let gridValues = Array.from({ length: 4 }, () => Array(4).fill(0));
 
-  // Function to generate a random binary value (0 or 1)
   function generateRandomValue() {
     return Math.round(Math.random());
   }
 
-  // Function to update the grid based on the current gridValues
   function updateGrid() {
-    // Clear the grid container
     gridContainer.innerHTML = '';
-
-    // Iterate through each row and column in gridValues
     gridValues.forEach((row, rowIndex) => {
       row.forEach((value, colIndex) => {
-        // Create a tile element for each grid cell
         const tile = document.createElement('div');
         tile.classList.add('tile');
         tile.style.backgroundColor = value === 0 ? 'blue' : 'red';
@@ -51,28 +66,22 @@ title: Binary Color Game
     });
   }
 
-  // Function to toggle the value at a specific grid cell
   function toggleValue(row, col) {
-    // Toggle between 0 and 1
     gridValues[row][col] = 1 - gridValues[row][col];
-    // Update the grid and number display
     updateGrid();
     updateNumberDisplay();
   }
 
-  // Function to update the number display based on the binary gridValues
   function updateNumberDisplay() {
     const decimalValues = gridValues.map(row => parseInt(row.join(''), 2));
     numberDisplay.textContent = `Decimal Values: ${decimalValues.join(', ')}`;
   }
 
-  // Function to initialize the grid with random values
   function initializeGrid() {
     gridValues = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => generateRandomValue()));
     updateGrid();
     updateNumberDisplay();
   }
 
-  // Call the initialization function when the script is executed
   initializeGrid();
 </script>
