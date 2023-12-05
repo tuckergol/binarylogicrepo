@@ -6,6 +6,7 @@ title: RGB Color Game
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,6 +110,12 @@ title: RGB Color Game
 
   // Function to initialize the grid with random values
   function initializeGrid() {
+    // Generate 4 random values between 1 and 15
+    const randomValues = Array.from({ length: 4 }, () => Math.floor(Math.random() * 15) + 1);
+
+    // Display the random values above the grid
+    numberDisplay.textContent = `Decimal Values: ${randomValues.join(', ')}`;
+
     // Initialize the grid values as a 4x4 array filled with random binary values
     gridValues = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => generateRandomValue()));
     updateGrid();
