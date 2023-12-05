@@ -4,9 +4,6 @@ permalink: /colorgame
 title: RGB Color Game
 ---
 
-
-<!-- Your HTML file -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,12 +20,12 @@ title: RGB Color Game
 
     .grid-container {
       display: grid;
-      grid-template-columns: repeat(4, 1fr); /* Use 1fr instead of fixed width */
+      grid-template-columns: repeat(4, 50px);
       gap: 5px;
     }
 
     .tile {
-      width: 100%; /* Make tiles take full width of the column */
+      width: 50px;
       height: 50px;
       display: flex;
       align-items: center;
@@ -43,21 +40,57 @@ title: RGB Color Game
       font-size: 18px;
     }
   </style>
-  <script src="scoreutils.js"></script>
 </head>
 <body>
 
 <div class="grid-container" id="gridContainer"></div>
 <div class="number-display" id="numberDisplay"></div>
 
-<!-- JavaScript code with comments -->
 <script>
-  // JavaScript code remains unchanged
+  const gridContainer = document.getElementById('gridContainer');
+  const numberDisplay = document.getElementById('numberDisplay');
+  let gridValues = Array.from({ length: 4 }, () => Array(4).fill(0));
+
+  function generateRandomValue() {
+    return Math.round(Math.random());
+  }
+
+  function updateGrid() {
+    gridContainer.innerHTML = '';
+    gridValues.forEach((row, rowIndex) => {
+      row.forEach((value, colIndex) => {
+        const tile = document.createElement('div');
+        tile.classList.add('tile');
+        tile.style.backgroundColor = value === 0 ? 'blue' : 'red';
+        tile.textContent = value.toString();
+        tile.addEventListener('click', () => toggleValue(rowIndex, colIndex));
+        gridContainer.appendChild(tile);
+      });
+    });
+  }
+
+  function toggleValue(row, col) {
+    gridValues[row][col] = 1 - gridValues[row][col];
+    updateGrid();
+    updateNumberDisplay();
+  }
+
+  function updateNumberDisplay() {
+    const decimalValues = gridValues.map(row => parseInt(row.join(''), 2));
+    numberDisplay.textContent = `Decimal Values: ${decimalValues.join(', ')}`;
+  }
+
+  function initializeGrid() {
+    gridValues = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => generateRandomValue()));
+    updateGrid();
+    updateNumberDisplay();
+  }
+
+  initializeGrid();
 </script>
 
 </body>
 </html>
-
 
 
 rgb change color game
