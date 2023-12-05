@@ -5,9 +5,6 @@ title: RGB Color Game
 ---
 
 
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,7 +39,7 @@ title: RGB Color Game
       font-size: 20px;
     }
 
-    .number-display {
+    .numbers-container {
       margin-top: 20px;
       font-size: 18px;
     }
@@ -50,15 +47,17 @@ title: RGB Color Game
 </head>
 <body>
 
-<!-- Container for the grid and display of decimal values -->
+<!-- Container for the grid -->
 <div class="grid-container" id="gridContainer"></div>
-<div class="number-display" id="numberDisplay"></div>
+
+<!-- Container for the display of decimal values -->
+<div class="numbers-container" id="numbersContainer"></div>
 
 <!-- JavaScript code for the RGB color game -->
 <script>
   // Get references to HTML elements
   const gridContainer = document.getElementById('gridContainer');
-  const numberDisplay = document.getElementById('numberDisplay');
+  const numbersContainer = document.getElementById('numbersContainer');
 
   // Initialize the grid values as a 4x4 array filled with zeros
   let gridValues = Array.from({ length: 4 }, () => Array(4).fill(0));
@@ -94,16 +93,16 @@ title: RGB Color Game
   // Function to update the number display based on the binary gridValues
   function updateNumberDisplay() {
     const decimalValues = gridValues.map(row => parseInt(row.join(''), 2));
-    numberDisplay.textContent = `Decimal Values: ${decimalValues.join(', ')}`;
+    numbersContainer.textContent = `Decimal Values: ${decimalValues.join(', ')}`;
   }
 
   // Function to initialize the grid with random values
   function initializeGrid() {
     // Generate 4 random values between 1 and 15
     const randomValues = Array.from({ length: 4 }, () => Math.floor(Math.random() * 15) + 1);
-    
+
     // Display the random values above the grid
-    numberDisplay.textContent = `Decimal Values: ${randomValues.join(', ')}`;
+    numbersContainer.textContent = `Decimal Values: ${randomValues.join(', ')}`;
 
     // Initialize the grid values as a 4x4 array filled with random binary values
     gridValues = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => generateRandomValue()));
