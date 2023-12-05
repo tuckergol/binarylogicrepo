@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /colorgame
-title: Binary Color Game
+title: RGB Color Game
 ---
 
 <!DOCTYPE html>
@@ -43,8 +43,8 @@ title: Binary Color Game
 </head>
 <body>
 
-<div class="grid-container" id="gridContainer"></div>
 <div class="number-display" id="numberDisplay"></div>
+<div class="grid-container" id="gridContainer"></div>
 
 <script>
   const gridContainer = document.getElementById('gridContainer');
@@ -80,19 +80,18 @@ title: Binary Color Game
     numberDisplay.textContent = `Decimal Values: ${decimalValues.join(', ')}`;
   }
 
-  function initializeGrid() {
-    gridValues = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => generateRandomValue()));
-    updateGrid();
-    updateNumberDisplay();
-  }
-
   function generateRandomDecimals() {
     const randomDecimals = Array.from({ length: 4 }, () => Math.floor(Math.random() * 15) + 1);
     numberDisplay.textContent += `\nRandom Decimals: ${randomDecimals.join(', ')}`;
   }
 
+  function initializeGrid() {
+    gridValues = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => generateRandomValue()));
+    updateGrid();
+    generateRandomDecimals();
+  }
+
   initializeGrid();
-  generateRandomDecimals();
 </script>
 
 </body>
