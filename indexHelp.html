@@ -4,7 +4,6 @@ permalink: /colorgame
 title: RGB Color Game
 ---
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,6 +41,8 @@ title: RGB Color Game
     .numbers-container {
       margin-top: 20px;
       font-size: 18px;
+      z-index: 1; /* Ensure the numbers are displayed above the grid */
+      position: relative; /* Set position relative for z-index to work */
     }
   </style>
 </head>
