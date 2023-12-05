@@ -7,6 +7,7 @@ title: RGB Color Game
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,32 +45,20 @@ title: RGB Color Game
     .number-display {
       margin-top: 20px;
       font-size: 18px;
-      display: none; /* Initially hide the decimal values */
-    }
-
-    #submitBtn {
-      margin-top: 10px;
-      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-<!-- Container for the grid -->
+<!-- Container for the grid and display of decimal values -->
 <div class="grid-container" id="gridContainer"></div>
-
-<!-- Display of decimal values -->
 <div class="number-display" id="numberDisplay"></div>
-
-<!-- Submit button -->
-<button id="submitBtn" onclick="showResults()">Submit</button>
 
 <!-- JavaScript code for the RGB color game -->
 <script>
   // Get references to HTML elements
   const gridContainer = document.getElementById('gridContainer');
   const numberDisplay = document.getElementById('numberDisplay');
-  const submitBtn = document.getElementById('submitBtn');
 
   // Initialize the grid values as a 4x4 array filled with zeros
   let gridValues = Array.from({ length: 4 }, () => Array(4).fill(0));
@@ -112,29 +101,13 @@ title: RGB Color Game
   function initializeGrid() {
     // Generate 4 random values between 1 and 15
     const randomValues = Array.from({ length: 4 }, () => Math.floor(Math.random() * 15) + 1);
-
+    
     // Display the random values above the grid
     numberDisplay.textContent = `Decimal Values: ${randomValues.join(', ')}`;
 
     // Initialize the grid values as a 4x4 array filled with random binary values
     gridValues = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => generateRandomValue()));
     updateGrid();
-  }
-
-  // Show the results (decimal values and correctness percentage)
-  function showResults() {
-    numberDisplay.style.display = 'block'; // Show the decimal values
-
-    // Calculate correctness percentage (example: 75% for demonstration)
-    const correctnessPercentage = calculateCorrectness();
-    alert(`Correctness Percentage: ${correctnessPercentage}%`);
-  }
-
-  // Example function to calculate correctness percentage
-  function calculateCorrectness() {
-    // Replace this with your own logic to calculate correctness
-    // For demonstration, let's assume 75% correctness
-    return 75;
   }
 
   // Call the initialization function when the script is executed
