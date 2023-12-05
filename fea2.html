@@ -1,6 +1,12 @@
 ---
 layout: default
-title: Sudoku.bin
+title: My Stats
 ---
 
 <!DOCTYPE html>
+<h1>Total Score</h1>
+<script src="scoreutils.js"></script>
+<h3 id="scorectr">0</h3>
+<script>
+    document.getElementById('scorectr').innerHTML = getScore()
+</script>
