@@ -31,23 +31,33 @@ title: RGB Color Game
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-weight: bold;
+      font-weight: normal;
       font-size: 20px;
       border-radius: 10px; /* Adjust this value to control the roundness of the corners */
       overflow: hidden; /* Add this line to ensure consistent appearance */
+      background-color: #383838; /* Default color */
+      color: #a3e334; /* Font color, white in this case */
+      font-family: 'Fira Code', monospace;
+    }
+
+    .tile.active {
+      background-color: #2b2e30; /* Updated color when active (black) */
+      color: #a3e334; /* Font color, white in this case */
     }
 
     .number-display {
       margin-top: 20px;
-      font-size: 18px;
+      font-size: 16px;
       display: none; /* Initially hide the output values */
       font-family: 'Fira Code', monospace; /* Updated font family */
+      color: #a3e334; /* Font color, white in this case */
     }
 
     .random-decimals {
       font-size: 16px;
       margin-bottom: 10px;
       font-family: 'Fira Code', monospace; /* Updated font family */
+      color: #a3e334; /* Font color, white in this case */
     }
 
     .submit-button {
@@ -55,6 +65,9 @@ title: RGB Color Game
       padding: 8px 16px;
       font-size: 16px;
       cursor: pointer;
+      background-color: #383838;
+      color: #a3e334; /* Font color, white in this case */
+      font-family: 'Fira Code', monospace;
     }
   </style>
 </head>
@@ -81,7 +94,9 @@ title: RGB Color Game
       row.forEach((value, colIndex) => {
         const tile = document.createElement('div');
         tile.classList.add('tile');
-        tile.style.backgroundColor = value === 0 ? 'gray' : 'black';
+        if (value === 1) {
+          tile.classList.add('active');
+        }
         tile.textContent = value.toString();
         tile.addEventListener('click', () => toggleValue(rowIndex, colIndex));
         gridContainer.appendChild(tile);
