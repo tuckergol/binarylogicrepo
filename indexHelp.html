@@ -15,7 +15,7 @@ title: RGB Color Game
       display: flex;
       flex-direction: column;
       align-items: center;
-      font-family: Arial, sans-serif;
+      font-family: 'Fira Code', monospace; /* Updated font family */
     }
 
     .grid-container {
@@ -40,11 +40,21 @@ title: RGB Color Game
     .number-display {
       margin-top: 20px;
       font-size: 18px;
+      display: none; /* Initially hide the output values */
+      font-family: 'Fira Code', monospace; /* Updated font family */
     }
 
     .random-decimals {
       font-size: 16px;
       margin-bottom: 10px;
+      font-family: 'Fira Code', monospace; /* Updated font family */
+    }
+
+    .submit-button {
+      margin-top: 10px;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -53,6 +63,7 @@ title: RGB Color Game
 <div class="random-decimals" id="randomDecimals"></div>
 <div class="grid-container" id="gridContainer"></div>
 <div class="number-display" id="numberDisplay"></div>
+<button class="submit-button" onclick="revealAnswers()">Submit</button>
 
 <script>
   const gridContainer = document.getElementById('gridContainer');
@@ -70,7 +81,7 @@ title: RGB Color Game
       row.forEach((value, colIndex) => {
         const tile = document.createElement('div');
         tile.classList.add('tile');
-        tile.style.backgroundColor = value === 0 ? 'blue' : 'red';
+        tile.style.backgroundColor = value === 0 ? 'gray' : 'black';
         tile.textContent = value.toString();
         tile.addEventListener('click', () => toggleValue(rowIndex, colIndex));
         gridContainer.appendChild(tile);
@@ -98,6 +109,11 @@ title: RGB Color Game
   function generateRandomDecimals() {
     const randomDecimalsArray = Array.from({ length: 4 }, () => Math.floor(Math.random() * 15) + 1);
     randomDecimals.textContent = `Random Decimals: ${randomDecimalsArray.join(', ')}`;
+  }
+
+  function revealAnswers() {
+    // Toggle the display of the output values
+    numberDisplay.style.display = numberDisplay.style.display === 'none' ? 'block' : 'none';
   }
 
   initializeGrid();
