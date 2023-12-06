@@ -15,8 +15,8 @@ title: RGB Color Game
       display: flex;
       flex-direction: column;
       align-items: center;
-      font-family: 'Fira Code', monospace; /* Updated font family */
-      color: green; /* Updated text color */
+      font-family: 'Fira Code', monospace;
+      color: green;
     }
 
     .grid-container {
@@ -34,23 +34,21 @@ title: RGB Color Game
       cursor: pointer;
       font-weight: bold;
       font-size: 20px;
-      border-radius: 10px; /* Adjust this value to control the roundness of the corners */
-      overflow: hidden; /* Add this line to ensure consistent appearance */
+      border-radius: 10px;
+      overflow: hidden;
     }
 
     .number-display {
       margin-top: 20px;
       font-size: 18px;
-      display: none; /* Initially hide the output values */
-      font-family: 'Fira Code', monospace; /* Updated font family */
-      color: green; /* Updated text color */
+      display: none;
+      color: green;
     }
 
     .random-decimals {
       font-size: 16px;
       margin-bottom: 10px;
-      font-family: 'Fira Code', monospace; /* Updated font family */
-      color: green; /* Updated text color */
+      color: green;
     }
 
     .submit-button {
@@ -58,7 +56,13 @@ title: RGB Color Game
       padding: 8px 16px;
       font-size: 16px;
       cursor: pointer;
-      color: green; /* Updated text color */
+      color: green;
+    }
+
+    .percentage-display {
+      margin-top: 10px;
+      font-size: 16px;
+      color: green;
     }
   </style>
 </head>
@@ -68,12 +72,15 @@ title: RGB Color Game
 <div class="grid-container" id="gridContainer"></div>
 <div class="number-display" id="numberDisplay"></div>
 <button class="submit-button" onclick="revealAnswers()">Submit</button>
+<div class="percentage-display" id="percentageDisplay"></div>
 
 <script>
   const gridContainer = document.getElementById('gridContainer');
   const numberDisplay = document.getElementById('numberDisplay');
   const randomDecimals = document.getElementById('randomDecimals');
+  const percentageDisplay = document.getElementById('percentageDisplay');
   let gridValues = Array.from({ length: 4 }, () => Array(4).fill(0));
+  let uncorrelatedValues = Array.from({ length: 4 }, () => Array(4).fill(0));
 
   function generateRandomValue() {
     return Math.round(Math.random());
@@ -105,7 +112,8 @@ title: RGB Color Game
   }
 
   function initializeGrid() {
-    gridValues = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => 0)); // Set all values to 0
+    gridValues = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => 0));
+    uncorrelatedValues = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => generateRandomValue()));
     updateGrid();
     updateNumberDisplay();
   }
@@ -116,8 +124,23 @@ title: RGB Color Game
   }
 
   function revealAnswers() {
-    // Toggle the display of the output values
+    updateNumberDisplay();
+    calculatePercentage();
     numberDisplay.style.display = numberDisplay.style.display === 'none' ? 'block' : 'none';
+  }
+
+  function calculatePercentage() {
+    let correctCount = 0;
+    gridValues.forEach((row, rowIndex) => {
+      row.forEach((value, colIndex) => {
+        if (value === uncorrelatedValues[rowIndex][colIndex]) {
+          correctCount++;
+        }
+      });
+    });
+    const totalValues = gridValues.length * gridValues[0].length;
+    const correctnessPercentage = (correctCount / totalValues) * 100;
+    percentageDisplay.textContent = `Correctness: ${correctnessPercentage.toFixed(2)}%`;
   }
 
   initializeGrid();
