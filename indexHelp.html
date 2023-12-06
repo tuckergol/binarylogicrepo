@@ -90,7 +90,7 @@ title: RGB Color Game
   }
 
   function initializeGrid() {
-    gridValues = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => generateRandomValue()));
+    gridValues = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => 0)); // Set all values to 0
     updateGrid();
     updateNumberDisplay();
   }
