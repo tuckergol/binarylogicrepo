@@ -6,6 +6,8 @@ title: RGB Color Game
 
 <!DOCTYPE html>
 <html lang="en">
+
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Toggle Grid</title>
@@ -71,85 +73,109 @@ title: RGB Color Game
       color: #a3e334;
       font-family: 'Fira Code', monospace;
     }
+
+    .percentage-display {
+      margin-top: 10px;
+      font-size: 16px;
+      display: none;
+      color: #a3e334;
+    }
   </style>
+</head>
 
-<div class="random-decimals" id="randomDecimals"></div>
-<div class="grid-container" id="gridContainer"></div>
-<div class="number-display" id="numberDisplay"></div>
-<button class="submit-button" onclick="revealAnswers()">Submit</button>
-<div class="percentage-display" id="percentageDisplay"></div>
+<body>
 
-<script>
-  const gridContainer = document.getElementById('gridContainer');
-  const numberDisplay = document.getElementById('numberDisplay');
-  const randomDecimals = document.getElementById('randomDecimals');
-  const percentageDisplay = document.getElementById('percentageDisplay');
-  let gridValues = Array.from({ length: 4 }, () => Array(4).fill(0));
-  let uncorrelatedValues = Array.from({ length: 4 }, () => Array(4).fill(0));
+  <div class="random-decimals" id="randomDecimals"></div>
+  <div class="grid-container" id="gridContainer"></div>
+  <button class="submit-button" onclick="revealAnswers()">Submit</button>
+  <div class="number-display" id="numberDisplay"></div>
+  <div class="percentage-display" id="percentageDisplay"></div>
 
-  function generateRandomValue() {
-    return Math.round(Math.random());
-  }
+  <script>
+    const gridContainer = document.getElementById('gridContainer');
+    const numberDisplay = document.getElementById('numberDisplay');
+    const randomDecimals = document.getElementById('randomDecimals');
+    const percentageDisplay = document.getElementById('percentageDisplay');
+    let gridValues = Array.from({
+      length: 4
+    }, () => Array(4).fill(0));
+    let uncorrelatedValues = Array.from({
+      length: 4
+    }, () => Array(4).fill(0));
 
-  function updateGrid() {
-    gridContainer.innerHTML = '';
-    gridValues.forEach((row, rowIndex) => {
-      row.forEach((value, colIndex) => {
-        const tile = document.createElement('div');
-        tile.classList.add('tile');
-        if (value === 1) {
-          tile.classList.add('active');
-        }
-        tile.textContent = value.toString();
-        tile.addEventListener('click', () => toggleValue(rowIndex, colIndex));
-        gridContainer.appendChild(tile);
+    function generateRandomValue() {
+      return Math.round(Math.random());
+    }
+
+    function updateGrid() {
+      gridContainer.innerHTML = '';
+      gridValues.forEach((row, rowIndex) => {
+        row.forEach((value, colIndex) => {
+          const tile = document.createElement('div');
+          tile.classList.add('tile');
+          if (value === 1) {
+            tile.classList.add('active');
+          }
+          tile.textContent = value.toString();
+          tile.addEventListener('click', () => toggleValue(rowIndex, colIndex));
+          gridContainer.appendChild(tile);
+        });
       });
-    });
-  }
+    }
 
-  function toggleValue(row, col) {
-    gridValues[row][col] = 1 - gridValues[row][col];
-    updateGrid();
-    updateNumberDisplay();
-  }
+    function toggleValue(row, col) {
+      gridValues[row][col] = 1 - gridValues[row][col];
+      updateGrid();
+      updateNumberDisplay();
+    }
 
-  function updateNumberDisplay() {
-    const decimalValues = gridValues.map(row => parseInt(row.join(''), 2));
-    numberDisplay.textContent = `Decimal Values: ${decimalValues.join(', ')}`;
-  }
+    function updateNumberDisplay() {
+      const decimalValues = gridValues.map(row => parseInt(row.join(''), 2));
+      numberDisplay.textContent = `Decimal Values: ${decimalValues.join(', ')}`;
+    }
 
-  function initializeGrid() {
-    gridValues = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => 0));
-    uncorrelatedValues = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => generateRandomValue()));
-    updateGrid();
-    updateNumberDisplay();
-  }
+    function initializeGrid() {
+      gridValues = Array.from({
+        length: 4
+      }, () => Array(4).fill(0));
+      uncorrelatedValues = Array.from({
+        length: 4
+      }, () => Array(4).fill(0));
+      updateGrid();
+    }
 
-  function generateRandomDecimals() {
-    const randomDecimalsArray = Array.from({ length: 4 }, () => Math.floor(Math.random() * 15) + 1);
-    randomDecimals.textContent = `Random Decimals: ${randomDecimalsArray.join(', ')}`;
-  }
+    function generateRandomDecimals() {
+      const randomDecimalsArray = Array.from({
+        length: 4
+      }, () => Math.floor(Math.random() * 15) + 1);
+      randomDecimals.textContent = `Random Decimals: ${randomDecimalsArray.join(', ')}`;
+    }
 
-  function revealAnswers() {
-    updateNumberDisplay();
-    calculatePercentage();
-    numberDisplay.style.display = numberDisplay.style.display === 'none' ? 'block' : 'none';
-  }
+    function revealAnswers() {
+      generateRandomDecimals();
+      updateNumberDisplay();
+      calculatePercentage();
+      numberDisplay.style.display = 'block';
+      percentageDisplay.style.display = 'block';
+    }
 
-  function calculatePercentage() {
-    let correctCount = 0;
-    gridValues.forEach((row, rowIndex) => {
-      row.forEach((value, colIndex) => {
-        if (value === uncorrelatedValues[rowIndex][colIndex]) {
-          correctCount++;
-        }
+    function calculatePercentage() {
+      let correctCount = 0;
+      gridValues.forEach((row, rowIndex) => {
+        row.forEach((value, colIndex) => {
+          if (value === uncorrelatedValues[rowIndex][colIndex]) {
+            correctCount++;
+          }
+        });
       });
-    });
-    const totalValues = gridValues.length * gridValues[0].length;
-    const correctnessPercentage = (correctCount / totalValues) * 100;
-    percentageDisplay.textContent = `Correctness: ${correctnessPercentage.toFixed(2)}%`;
-  }
+      const totalValues = gridValues.length * gridValues[0].length;
+      const correctnessPercentage = (correctCount / totalValues) * 100;
+      percentageDisplay.textContent = `Correctness: ${correctnessPercentage.toFixed(2)}%`;
+    }
 
-  initializeGrid();
-  generateRandomDecimals();
-</script>
+    initializeGrid();
+  </script>
+
+</body>
+
+</html>
