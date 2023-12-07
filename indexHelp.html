@@ -99,13 +99,6 @@ title: RGB Color Game
     let gridValues = Array.from({
       length: 4
     }, () => Array(4).fill(0));
-    let uncorrelatedValues = Array.from({
-      length: 4
-    }, () => Array(4).fill(0));
-
-    function generateRandomValue() {
-      return Math.round(Math.random());
-    }
 
     function updateGrid() {
       gridContainer.innerHTML = '';
@@ -138,9 +131,6 @@ title: RGB Color Game
       gridValues = Array.from({
         length: 4
       }, () => Array(4).fill(0));
-      uncorrelatedValues = Array.from({
-        length: 4
-      }, () => Array(4).fill(0));
       updateGrid();
     }
 
@@ -163,7 +153,10 @@ title: RGB Color Game
       let correctCount = 0;
       gridValues.forEach((row, rowIndex) => {
         row.forEach((value, colIndex) => {
-          if (value === uncorrelatedValues[rowIndex][colIndex]) {
+          // Add your logic here if needed
+          // Check the correctness by comparing with some criteria
+          // For now, we'll consider it correct if the value is 1
+          if (value === 1) {
             correctCount++;
           }
         });
