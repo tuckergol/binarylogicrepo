@@ -52,6 +52,7 @@ title: RGB Color Game
     .number-display {
       margin-top: 20px;
       font-size: 16px;
+      display: none;
       font-family: 'Fira Code', monospace;
       color: #a3e334;
     }
@@ -86,8 +87,8 @@ title: RGB Color Game
 
   <div class="random-decimals" id="randomDecimals"></div>
   <div class="grid-container" id="gridContainer"></div>
-  <div class="number-display" id="numberDisplay"></div>
   <button class="submit-button" onclick="revealAnswers()">Submit</button>
+  <div class="number-display" id="numberDisplay"></div>
   <div class="score-display" id="scoreDisplay"></div>
 
   <script>
@@ -96,6 +97,9 @@ title: RGB Color Game
     const randomDecimals = document.getElementById('randomDecimals');
     const scoreDisplay = document.getElementById('scoreDisplay');
     let gridValues = Array.from({
+      length: 4
+    }, () => Array(4).fill(0));
+    let uncorrelatedValues = Array.from({
       length: 4
     }, () => Array(4).fill(0));
 
@@ -130,6 +134,9 @@ title: RGB Color Game
       gridValues = Array.from({
         length: 4
       }, () => Array(4).fill(0));
+      uncorrelatedValues = Array.from({
+        length: 4
+      }, () => Array(4).fill(0));
       updateGrid();
       generateRandomDecimals();
     }
@@ -144,6 +151,7 @@ title: RGB Color Game
     function revealAnswers() {
       updateNumberDisplay();
       calculateScore();
+      numberDisplay.style.display = 'block';
       scoreDisplay.style.display = 'block';
     }
 
@@ -151,7 +159,6 @@ title: RGB Color Game
       let score = 0;
       gridValues.forEach((row, rowIndex) => {
         row.forEach((value, colIndex) => {
-          // Add your logic here if needed
           // Check the correctness by comparing with uncorrelated values
           if (value === 1 && value === uncorrelatedValues[rowIndex][colIndex]) {
             score++;
