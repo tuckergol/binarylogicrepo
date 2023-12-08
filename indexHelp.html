@@ -86,8 +86,8 @@ title: RGB Color Game
 
   <div class="random-decimals" id="randomDecimals"></div>
   <div class="grid-container" id="gridContainer"></div>
-  <button class="submit-button" onclick="revealAnswers()">Submit</button>
   <div class="number-display" id="numberDisplay"></div>
+  <button class="submit-button" onclick="revealAnswers()">Submit</button>
   <div class="percentage-display" id="percentageDisplay"></div>
 
   <script>
@@ -131,6 +131,7 @@ title: RGB Color Game
         length: 4
       }, () => Array(4).fill(0));
       updateGrid();
+      generateRandomDecimals();
     }
 
     function generateRandomDecimals() {
@@ -141,7 +142,6 @@ title: RGB Color Game
     }
 
     function revealAnswers() {
-      generateRandomDecimals();
       updateNumberDisplay();
       calculatePercentage();
       numberDisplay.style.display = 'block';
