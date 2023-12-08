@@ -160,7 +160,7 @@ title: RGB Color Game
       gridValues.forEach((row, rowIndex) => {
         row.forEach((value, colIndex) => {
           // Check the correctness by comparing with uncorrelated values
-          if (value === 1 && value === uncorrelatedValues[rowIndex][colIndex]) {
+          if (value === uncorrelatedValues[rowIndex][colIndex]) {
             score++;
           }
         });
