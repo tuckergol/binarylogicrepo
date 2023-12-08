@@ -73,7 +73,7 @@ title: RGB Color Game
       font-family: 'Fira Code', monospace;
     }
 
-    .percentage-display {
+    .score-display {
       margin-top: 10px;
       font-size: 16px;
       display: none;
@@ -88,13 +88,13 @@ title: RGB Color Game
   <div class="grid-container" id="gridContainer"></div>
   <div class="number-display" id="numberDisplay"></div>
   <button class="submit-button" onclick="revealAnswers()">Submit</button>
-  <div class="percentage-display" id="percentageDisplay"></div>
+  <div class="score-display" id="scoreDisplay"></div>
 
   <script>
     const gridContainer = document.getElementById('gridContainer');
     const numberDisplay = document.getElementById('numberDisplay');
     const randomDecimals = document.getElementById('randomDecimals');
-    const percentageDisplay = document.getElementById('percentageDisplay');
+    const scoreDisplay = document.getElementById('scoreDisplay');
     let gridValues = Array.from({
       length: 4
     }, () => Array(4).fill(0));
@@ -143,26 +143,22 @@ title: RGB Color Game
 
     function revealAnswers() {
       updateNumberDisplay();
-      calculatePercentage();
-      numberDisplay.style.display = 'block';
-      percentageDisplay.style.display = 'block';
+      calculateScore();
+      scoreDisplay.style.display = 'block';
     }
 
-    function calculatePercentage() {
-      let correctCount = 0;
+    function calculateScore() {
+      let score = 0;
       gridValues.forEach((row, rowIndex) => {
         row.forEach((value, colIndex) => {
           // Add your logic here if needed
-          // Check the correctness by comparing with some criteria
-          // For now, we'll consider it correct if the value is 1
-          if (value === 1) {
-            correctCount++;
+          // Check the correctness by comparing with uncorrelated values
+          if (value === 1 && value === uncorrelatedValues[rowIndex][colIndex]) {
+            score++;
           }
         });
       });
-      const totalValues = gridValues.length * gridValues[0].length;
-      const correctnessPercentage = (correctCount / totalValues) * 100;
-      percentageDisplay.textContent = `Correctness: ${correctnessPercentage.toFixed(2)}%`;
+      scoreDisplay.textContent = `Score: ${score} out of 4`;
     }
 
     initializeGrid();
