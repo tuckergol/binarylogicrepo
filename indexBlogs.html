@@ -1,117 +1,199 @@
 ---
 layout: default
 permalink: /sudoku
-title: 4x4 Binary Game
+title: Hexademical Game
 ---
 
 <!DOCTYPE html>
 <html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Binary Sudoku (4x4)</title>
+    <title>Binary and Hexadecimal Game</title>
     <style>
-        table {
-            border-collapse: collapse;
-            margin: 20px;
-        }
-
-        td {
-            width: 40px;
-            height: 40px;
+        body {
+            font-family: 'Fira Code', monospace;
+            background-color: #f0f0f0;
+            color: #a3e334;
             text-align: center;
-            border: 1px solid #000;
         }
 
-        input {
-            width: 100%;
-            height: 100%;
-            border: none;
-            text-align: center;
-            font-size: 1.2em;
+        /* container for text (cool visual style) */
+        #game-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #383838;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .fixed {
-            background-color: #eee;
+        /* button visuals */
+        button {
+            width: 100px;
+            height: 60px;
+            font-size: 22px;
+            margin: 5px;
+            font-family: 'Fira Code', monospace;
+            background-color: #2b2e30;
+            color: #a3e334;
+            cursor: pointer;
+        }
+
+        #decimal-display {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #a3e334;
+        }
+
+        #binary-buttons,
+        #hex-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        #success-message,
+        #error-message {
+            font-size: 18px;
+            margin-top: 10px;
+            color: #a3e334;
         }
     </style>
-    <table id="sudoku-board"></table>
-    <script src="scoreutils.js"></script>
-    <script>
-        function generateBoard() {
-            const size = 4;
-            const board = Array.from({ length: size }, () => Array(size).fill(0));
+</head>
+<body>
 
-            for (let i = 0; i < size; i++) {
-                board[i][i] = Math.floor(Math.random() * 2);
-            }
+<div id="game-container">
+    <h1>Learn the Binary and Hexadecimal Basics</h1>
+    <p>
+        Binary is a numerical system that uses only two digits: 0 and 1. Hexadecimal, on the other hand, uses digits 0-9 and A-F (or a-f) to represent values 0-15. In this game, you can learn and practice binary and hexadecimal conversions. Binary uses 2 as its base, while hexadecimal uses 16.
+    </p>
 
-            for (let i = 0; i < size; i++) {
-                const randomRow = Math.floor(Math.random() * size);
-                const randomCol = Math.floor(Math.random() * size);
+    <h2>Binary and Hexadecimal Math Basics:</h2>
+    <p>
+        In decimal (our usual base-10 system), each digit represents a power of 10. Similarly:
+    </p>
 
-                const tempRow = [...board[i]];
-                board[i] = [...board[randomRow]];
-                board[randomRow] = tempRow;
+    <ul>
+        <li>1 bit in binary represents 2<sup>0</sup> (1)</li>
+        <li>1 digit in hexadecimal represents 16<sup>0</sup> (1)</li>
+        <li>2 bits in binary represent 2<sup>1</sup> (2)</li>
+        <li>2 digits in hexadecimal represent 16<sup>1</sup> (16)</li>
+        <li>3 bits in binary represent 2<sup>2</sup> (4)</li>
+        <li>3 digits in hexadecimal represent 16<sup>2</sup> (256)</li>
+        <li>4 bits in binary represent 2<sup>3</sup> (8)</li>
+        <li>4 digits in hexadecimal represent 16<sup>3</sup> (4096)</li>
+    </ul>
 
-                for (let j = 0; j < size; j++) {
-                    const temp = board[j][i];
-                    board[j][i] = board[j][randomCol];
-                    board[j][randomCol] = temp;
-                }
-            }
+    <div id="decimal-display"></div>
+    <div id="binary-buttons"></div>
+    <div id="hex-buttons"></div>
 
-            return board;
+    <button onclick="newRound()">New</button>
+    <button onclick="checkAnswer()">Check</button>
+
+    <div id="success-message"></div>
+    <div id="error-message"></div>
+</div>
+
+<script>
+    let targetDecimal;
+    let binaryButtons = [];
+    let hexButtons = [];
+    let successMessage = document.getElementById('success-message');
+    let errorMessage = document.getElementById('error-message');
+
+    function generateRandomDecimal() {
+        return Math.floor(Math.random() * 256);
+    }
+
+    function updateDisplay() {
+        document.getElementById('decimal-display').textContent = `Represent ${targetDecimal} in binary and hexadecimal:`;
+    }
+
+    function generateBinaryButtons() {
+        const binaryButtonsContainer = document.getElementById('binary-buttons');
+
+        binaryButtonsContainer.innerHTML = '';
+
+        for (let i = 7; i >= 0; i--) {
+            const button = document.createElement('button');
+            button.textContent = '0';
+            binaryButtonsContainer.appendChild(button);
+
+            button.addEventListener('click', function () {
+                button.textContent = button.textContent === '0' ? '1' : '0';
+            });
+
+            binaryButtons.push(button);
         }
+    }
 
-        function initializeBoard() {
-            const board = generateBoard();
-            const table = document.getElementById('sudoku-board');
-            table.innerHTML = '';
+    function generateHexButtons() {
+        const hexButtonsContainer = document.getElementById('hex-buttons');
 
-            for (let i = 0; i < 4; i++) {
-                const row = table.insertRow();
+        hexButtonsContainer.innerHTML = '';
 
-                for (let j = 0; j < 4; j++) {
-                    const cell = row.insertCell();
-                    const value = board[i][j];
+        for (let i = 3; i >= 0; i--) {
+            const button = document.createElement('button');
+            button.textContent = '0';
+            hexButtonsContainer.appendChild(button);
 
-                    if (value !== 0) {
-                        cell.textContent = value;
-                        cell.classList.add('fixed');
-                    } else {
-                        const input = document.createElement('input');
-                        input.type = 'number';
-                        input.min = '0';
-                        input.max = '1';
-                        input.addEventListener('input', () => validateInput(input));
-                        cell.appendChild(input);
-                    }
-                }
-            }
+            button.addEventListener('click', function () {
+                let currentValue = parseInt(button.textContent, 16);
+                currentValue = (currentValue + 1) % 16;
+                button.textContent = currentValue.toString(16).toUpperCase();
+            });
+
+            hexButtons.push(button);
         }
+    }
 
-        function validateInput(input) {
-            const value = parseInt(input.value);
-            if (isNaN(value) || value < 0 || value > 1) {
-                input.value = '';
-            }
+    function newRound() {
+        targetDecimal = generateRandomDecimal();
+        updateDisplay();
+        resetBinaryButtons();
+        resetHexButtons();
+        resetMessages();
+    }
 
-            if (isBoardComplete()) {
-                displayCongratulations();
-            }
+    function resetBinaryButtons() {
+        binaryButtons.forEach(button => {
+            button.textContent = '0';
+        });
+    }
+
+    function resetHexButtons() {
+        hexButtons.forEach(button => {
+            button.textContent = '0';
+        });
+    }
+
+    function resetMessages() {
+        successMessage.textContent = '';
+        errorMessage.textContent = '';
+    }
+
+    function checkAnswer() {
+        const playerBinary = binaryButtons.map(button => button.textContent).join('');
+        const playerHex = hexButtons.map(button => button.textContent).join('');
+
+        const playerDecimalBinary = parseInt(playerBinary, 2);
+        const playerDecimalHex = parseInt(playerHex, 16);
+
+        if (playerDecimalBinary === targetDecimal && playerDecimalHex === targetDecimal) {
+            successMessage.textContent = 'Correct! You represented the number correctly in both binary and hexadecimal.';
+            errorMessage.textContent = '';
+        } else {
+            errorMessage.textContent = 'Incorrect. Try again in both binary and hexadecimal.';
+            successMessage.textContent = '';
         }
+    }
 
-        function isBoardComplete() {
-            const inputs = document.querySelectorAll('#sudoku-board input');
-            return Array.from(inputs).every(input => input.value !== '');
-        }
+    newRound();
+    generateBinaryButtons();
+    generateHexButtons();
+</script>
 
-        function displayCongratulations() {
-            scorePoint(1);
-            alert('Congratulations! You solved the puzzle.');
-            
-        }
-
-        window.addEventListener('load', function () {initializeBoard();});
-    </script>
+</body>
 </html>
