@@ -1,0 +1,128 @@
+---
+layout: default
+permalink: /letter
+title: Letter Game
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary to Letter Game</title>
+    <style>
+        body {
+            font-family: 'Fira Code', monospace;
+            background-color: #f0f0f0;
+            color: #333;
+            text-align: center;
+        }
+
+        #game-container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            width: 100px;
+            height: 40px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        input {
+            width: 50px;
+            height: 30px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        #binary-display,
+        #ascii-instructions {
+            margin-bottom: 20px;
+        }
+
+        #result-message {
+            font-size: 18px;
+            margin-top: 10px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <h1>Binary to Letter Game</h1>
+    <p>Guess the letter corresponding to the binary representation of an ASCII code:</p>
+
+    <div id="ascii-instructions">
+        <p>ASCII (American Standard Code for Information Interchange) is a character encoding standard that assigns numeric codes to represent text characters.</p>
+        <p>In this game, you'll be given the binary representation of an ASCII code, and your goal is to guess the corresponding letter.</p>
+    </div>
+
+    <div id="binary-display"></div>
+
+    <label for="guess-input">Your Guess:</label>
+    <input type="text" id="guess-input" maxlength="1" oninput="this.value = this.value.toUpperCase()">
+
+    <button onclick="checkAnswer()">Submit</button>
+
+    <div id="result-message"></div>
+</div>
+
+<script>
+    let targetAscii;
+
+    function generateRandomAscii() {
+        return Math.floor(Math.random() * (90 - 65 + 1)) + 65; // Random uppercase letter ASCII code
+    }
+
+    function convertAsciiToBinary(asciiCode) {
+        return asciiCode.toString(2);
+    }
+
+    function displayBinary() {
+        document.getElementById('binary-display').textContent = `Binary representation: ${convertAsciiToBinary(targetAscii)}`;
+    }
+
+    function newRound() {
+        targetAscii = generateRandomAscii();
+        displayBinary();
+        resetGuessInput();
+        resetResultMessage();
+    }
+
+    function resetGuessInput() {
+        document.getElementById('guess-input').value = '';
+    }
+
+    function resetResultMessage() {
+        document.getElementById('result-message').textContent = '';
+    }
+
+    function checkAnswer() {
+        const playerGuess = document.getElementById('guess-input').value;
+
+        if (playerGuess.length === 1) {
+            const playerAscii = playerGuess.charCodeAt(0);
+
+            if (playerAscii === targetAscii) {
+                document.getElementById('result-message').textContent = 'Correct! Well done.';
+            } else {
+                document.getElementById('result-message').textContent = 'Incorrect. Try again.';
+            }
+        } else {
+            document.getElementById('result-message').textContent = 'Please enter a single letter.';
+        }
+    }
+
+    newRound();
+</script>
+
+</body>
+</html>
