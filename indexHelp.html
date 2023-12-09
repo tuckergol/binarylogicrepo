@@ -6,8 +6,6 @@ title: RGB Color Game
 
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Toggle Grid</title>
@@ -64,7 +62,7 @@ title: RGB Color Game
       color: #a3e334;
     }
 
-    .submit-button {
+    .submit-button, .new-button {
       margin-top: 10px;
       padding: 8px 16px;
       font-size: 16px;
@@ -74,34 +72,29 @@ title: RGB Color Game
       font-family: 'Fira Code', monospace;
     }
 
-    .score-display {
-      margin-top: 10px;
-      font-size: 16px;
-      display: none;
-      color: #a3e334;
+    .new-button {
+      margin-left: 5px;
     }
   </style>
-</head>
-
-<body>
 
   <div class="random-decimals" id="randomDecimals"></div>
   <div class="grid-container" id="gridContainer"></div>
-  <button class="submit-button" onclick="revealAnswers()">Submit</button>
   <div class="number-display" id="numberDisplay"></div>
-  <div class="score-display" id="scoreDisplay"></div>
+  <button class="submit-button" onclick="revealAnswers()">Submit</button>
+  <button class="new-button" onclick="resetGrid()">New</button>
+  <div class="percentage-display" id="percentageDisplay"></div>
 
   <script>
     const gridContainer = document.getElementById('gridContainer');
     const numberDisplay = document.getElementById('numberDisplay');
     const randomDecimals = document.getElementById('randomDecimals');
-    const scoreDisplay = document.getElementById('scoreDisplay');
-    let gridValues = Array.from({
-      length: 4
-    }, () => Array(4).fill(0));
-    let uncorrelatedValues = Array.from({
-      length: 4
-    }, () => Array(4).fill(0));
+    const percentageDisplay = document.getElementById('percentageDisplay');
+    let gridValues = Array.from({ length: 4 }, () => Array(4).fill(0));
+    let uncorrelatedValues = Array.from({ length: 4 }, () => Array(4).fill(0));
+
+    function generateRandomValue() {
+      return Math.round(Math.random());
+    }
 
     function updateGrid() {
       gridContainer.innerHTML = '';
@@ -131,46 +124,45 @@ title: RGB Color Game
     }
 
     function initializeGrid() {
-      gridValues = Array.from({
-        length: 4
-      }, () => Array(4).fill(0));
-      uncorrelatedValues = Array.from({
-        length: 4
-      }, () => Array(4).fill(0));
+      gridValues = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => 0));
+      uncorrelatedValues = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => generateRandomValue()));
       updateGrid();
-      generateRandomDecimals();
+      updateNumberDisplay();
     }
 
     function generateRandomDecimals() {
-      const randomDecimalsArray = Array.from({
-        length: 4
-      }, () => Math.floor(Math.random() * 15) + 1);
+      const randomDecimalsArray = Array.from({ length: 4 }, () => Math.floor(Math.random() * 15) + 1);
       randomDecimals.textContent = `Random Decimals: ${randomDecimalsArray.join(', ')}`;
     }
 
     function revealAnswers() {
       updateNumberDisplay();
-      calculateScore();
-      numberDisplay.style.display = 'block';
-      scoreDisplay.style.display = 'block';
+      calculatePercentage();
+      numberDisplay.style.display = numberDisplay.style.display === 'none' ? 'block' : 'none';
     }
 
-    function calculateScore() {
-      let score = 0;
+    function resetGrid() {
+      initializeGrid();
+      generateRandomDecimals();
+      numberDisplay.style.display = 'none';
+      percentageDisplay.textContent = '';
+    }
+
+    function calculatePercentage() {
+      let correctCount = 0;
       gridValues.forEach((row, rowIndex) => {
         row.forEach((value, colIndex) => {
-          // Check the correctness by comparing with uncorrelated values
           if (value === uncorrelatedValues[rowIndex][colIndex]) {
-            score++;
+            correctCount++;
           }
         });
       });
-      scoreDisplay.textContent = `Score: ${score} out of 4`;
+      const totalValues = gridValues.length * gridValues[0].length;
+      const correctnessPercentage = (correctCount / totalValues) * 100;
+      percentageDisplay.textContent = `Correctness: ${correctnessPercentage.toFixed(2)}%`;
     }
 
     initializeGrid();
+    generateRandomDecimals();
   </script>
-
-</body>
-
 </html>
