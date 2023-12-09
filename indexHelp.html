@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /colorgame
-title: RGB Color Game
+title: 5x5 Binary Practice
 ---
 
 <!DOCTYPE html>
@@ -20,7 +20,7 @@ title: RGB Color Game
 
     .grid-container {
       display: grid;
-      grid-template-columns: repeat(4, 50px);
+      grid-template-columns: repeat(5, 50px);
       gap: 5px;
     }
 
@@ -89,8 +89,9 @@ title: RGB Color Game
     const numberDisplay = document.getElementById('numberDisplay');
     const randomDecimals = document.getElementById('randomDecimals');
     const percentageDisplay = document.getElementById('percentageDisplay');
-    let gridValues = Array.from({ length: 4 }, () => Array(4).fill(0));
-    let uncorrelatedValues = Array.from({ length: 4 }, () => Array(4).fill(0));
+    let gridValues = Array.from({ length: 5 }, () => Array(5).fill(0));
+    let uncorrelatedValues = Array.from({ length: 5 }, () => Array(5).fill(0));
+    let decimalValuesVisible = false;
 
     function generateRandomValue() {
       return Math.round(Math.random());
@@ -124,27 +125,29 @@ title: RGB Color Game
     }
 
     function initializeGrid() {
-      gridValues = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => 0));
-      uncorrelatedValues = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => generateRandomValue()));
+      gridValues = Array.from({ length: 5 }, () => Array.from({ length: 5 }, () => 0));
+      uncorrelatedValues = Array.from({ length: 5 }, () => Array.from({ length: 5 }, () => generateRandomValue()));
       updateGrid();
       updateNumberDisplay();
+      decimalValuesVisible = false;
     }
 
     function generateRandomDecimals() {
-      const randomDecimalsArray = Array.from({ length: 4 }, () => Math.floor(Math.random() * 15) + 1);
+      const randomDecimalsArray = Array.from({ length: 5 }, () => Math.floor(Math.random() * 31) + 1);
       randomDecimals.textContent = `Random Decimals: ${randomDecimalsArray.join(', ')}`;
     }
 
     function revealAnswers() {
       updateNumberDisplay();
       calculatePercentage();
-      numberDisplay.style.display = numberDisplay.style.display === 'none' ? 'block' : 'none';
+      decimalValuesVisible = true;
+      numberDisplay.style.display = 'block';
     }
 
     function resetGrid() {
       initializeGrid();
       generateRandomDecimals();
-      numberDisplay.style.display = 'none';
+      numberDisplay.style.display = decimalValuesVisible ? 'block' : 'none';
       percentageDisplay.textContent = '';
     }
 
