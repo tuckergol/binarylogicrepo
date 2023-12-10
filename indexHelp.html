@@ -91,7 +91,6 @@ title: 5x5 Binary Practice
     const percentageDisplay = document.getElementById('percentageDisplay');
     let gridValues = Array.from({ length: 5 }, () => Array(5).fill(0));
     let uncorrelatedValues = Array.from({ length: 5 }, () => Array(5).fill(0));
-    let decimalValuesVisible = false;
 
     function generateRandomValue() {
       return Math.round(Math.random());
@@ -129,7 +128,6 @@ title: 5x5 Binary Practice
       uncorrelatedValues = Array.from({ length: 5 }, () => Array.from({ length: 5 }, () => generateRandomValue()));
       updateGrid();
       updateNumberDisplay();
-      decimalValuesVisible = false;
     }
 
     function generateRandomDecimals() {
@@ -139,30 +137,14 @@ title: 5x5 Binary Practice
 
     function revealAnswers() {
       updateNumberDisplay();
-      calculatePercentage();
-      decimalValuesVisible = true;
-      numberDisplay.style.display = 'block';
+      numberDisplay.style.display = numberDisplay.style.display === 'none' ? 'block' : 'none';
     }
 
     function resetGrid() {
       initializeGrid();
       generateRandomDecimals();
-      numberDisplay.style.display = decimalValuesVisible ? 'block' : 'none';
+      numberDisplay.style.display = 'none';
       percentageDisplay.textContent = '';
-    }
-
-    function calculatePercentage() {
-      let correctCount = 0;
-      gridValues.forEach((row, rowIndex) => {
-        row.forEach((value, colIndex) => {
-          if (value === uncorrelatedValues[rowIndex][colIndex]) {
-            correctCount++;
-          }
-        });
-      });
-      const totalValues = gridValues.length * gridValues[0].length;
-      const correctnessPercentage = (correctCount / totalValues) * 100;
-      percentageDisplay.textContent = `Correctness: ${correctnessPercentage.toFixed(2)}%`;
     }
 
     initializeGrid();
