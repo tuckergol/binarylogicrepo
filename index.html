@@ -3,17 +3,17 @@ layout: default
 title: Home
 ---
 
+<!DOCTYPE html>
 <html lang="en">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Decimal to Binary (Mini Lesson)</title>
   <style>
-    body { /* body color and font */
+    body {
       font-family: 'Fira Code', monospace;
       background-color: #f0f0f0;
       color: #a3e334;
     }
-    /* container for text (cool visual style) */
     #lesson-container {
       max-width: 600px;
       margin: 20px auto;
@@ -22,7 +22,6 @@ title: Home
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
-    /* button visuals */
     button {
       width: 100px;
       height: 60px;
@@ -33,34 +32,34 @@ title: Home
       color: #a3e334;
       cursor: pointer;
     }
-
     #decimal-display {
       font-size: 24px;
       margin-bottom: 10px;
     }
-
     #binary-buttons {
       display: flex;
     }
-
     #success-message,
     #error-message {
       font-size: 18px;
       margin-top: 10px;
     }
+    label {
+      margin-right: 10px;
+    }
+    #bit-input {
+      width: 40px;
+    }
   </style>
-
   <div id="lesson-container">
     <h1 style="text-align: center;">Learn the Binary Basics</h1>
     <p>
       Binary is a numerical system that uses only two digits: 0 and 1. It is a boolean system, meaning it is built upon "true" vs. "false," with 0 and 1 being represented respectively. Binary serves a major part in the foundation of all digital systems (most notably--computers!). In this mini lesson, you can learn and practice binary and binary decimal conversion. In Binary, each digit is called a "bit," and it represents a power of 2.
     </p>
-
     <h2>Binary Math Basics:</h2>
     <p>
       In decimal (our usual base-10 system), each digit represents a power of 10. Similarly, in binary:
     </p>
-
     <ul>
       <li>1 bit represents 2<sup>0</sup> (1)</li>
       <li>2 bits represent 2<sup>1</sup> (2)</li>
@@ -68,49 +67,47 @@ title: Home
       <li>4 bits represent 2<sup>3</sup> (8)</li>
       <li>5 bits represent 2<sup>4</sup> (16)</li>
     </ul>
-
     <p>
-      When counting in binary, you start from the right, and each digit represents a higher power of 2 as you move to the left. Think of it as accounting for the numbers you need in order to create a sum up to a given number.
+      When counting in binary, you start from the right, and each digit represents a higher power of 2 as you move to the left. Maybe think of it as selecting the numbers as components you need in order to create a sum up to a given number.
     </p>
-  
-    <p>
-      For the demonstration below, from right to left each button represents a 2<sup>?</sup> respectively to the mathematic sequence listed above. Simply click on a button to toggle it between a state of 0 and 1, 1 meaning your counting that number as a component to add up to a final answer. Click the "Check" button to check your answer. You can also click the "New" button to randomize the given number and reset the buttons.
-    </p>
-
+    <ul>
+      <li>Click the "Check" button to check your answer</li>
+      <li>Click the "New" button to randomize the given number and reset the buttons</li>
+      <li>You can adjust the number of bits between 5-8 in the white box and clicking the "Apply" button afterward</li>
+    </ul>
     <div id="decimal-display"></div>
     <div id="binary-buttons"></div>
-
+    <label for="bit-input">Number of Bits:</label>
+    <input type="number" id="bit-input" value="5" min="5" max="8">
+    <button onclick="updateBitLength()">Apply</button>
     <button onclick="newRound()">New</button>
     <button onclick="checkAnswer()">Check</button>
-
     <div id="success-message"></div>
     <div id="error-message"></div>
-
     <p>
       Once you feel confident enough in your basic binary skills, practice with them by navigating to the 5x5 Binary Practice at the top left!
     </p>
   </div>
-
   <script>
-    let targetDecimal;
     let binaryButtons = [];
     let successMessage = document.getElementById('success-message');
     let errorMessage = document.getElementById('error-message');
+    let targetDecimal;
 
-    function generateRandomDecimal() {
-      return Math.floor(Math.random() * 32);
+    function generateRandomDecimal(bitLength) {
+      return Math.floor(Math.random() * (2 ** bitLength));
     }
 
-    function updateDisplay() {
-      document.getElementById('decimal-display').textContent = `Represent ${targetDecimal} in binary using 5 bits:`;
+    function updateDisplay(targetDecimal, bitLength) {
+      document.getElementById('decimal-display').textContent = `Represent ${targetDecimal} in binary using ${bitLength} bits:`;
     }
 
-    function generateBinaryButtons() {
+    function generateBinaryButtons(bitLength) {
       const binaryButtonsContainer = document.getElementById('binary-buttons');
 
       binaryButtonsContainer.innerHTML = '';
 
-      for (let i = 4; i >= 0; i--) {
+      for (let i = bitLength - 1; i >= 0; i--) {
         const button = document.createElement('button');
         button.textContent = '0';
         binaryButtonsContainer.appendChild(button);
@@ -124,8 +121,10 @@ title: Home
     }
 
     function newRound() {
-      targetDecimal = generateRandomDecimal();
-      updateDisplay();
+      const bitInput = document.getElementById('bit-input');
+      const bitLength = parseInt(bitInput.value, 10);
+      targetDecimal = generateRandomDecimal(bitLength);
+      updateDisplay(targetDecimal, bitLength);
       resetBinaryButtons();
       resetMessages();
     }
@@ -141,7 +140,24 @@ title: Home
       errorMessage.textContent = '';
     }
 
+    function updateBitLength() {
+      const bitInput = document.getElementById('bit-input');
+      const newBitLength = parseInt(bitInput.value, 10);
+
+      if (newBitLength >= 5 && newBitLength <= 8) {
+        resetBinaryButtons();
+        binaryButtons = [];
+        generateBinaryButtons(newBitLength);
+        newRound();
+      } else {
+        alert('Please enter a number between 5 and 8.');
+        bitInput.value = '5';
+      }
+    }
+
     function checkAnswer() {
+      const bitInput = document.getElementById('bit-input');
+      const bitLength = parseInt(bitInput.value, 10);
       const playerBinary = binaryButtons.map(button => button.textContent).join('');
       const playerDecimal = parseInt(playerBinary, 2);
 
@@ -155,7 +171,6 @@ title: Home
     }
 
     newRound();
-    generateBinaryButtons();
+    generateBinaryButtons(5);
   </script>
-  
 </html>
