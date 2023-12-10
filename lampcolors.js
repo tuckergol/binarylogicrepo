@@ -97,3 +97,9 @@ function uRGB () {
     }
     return xRGB    
 }
+
+var c_pv = document.getElementById("cPreview")
+
+setInterval(() => {
+    c_pv.style.backgroundColor = `rgb(${uRGB().r}, ${uRGB().g}, ${uRGB().b})`
+}, 50)
