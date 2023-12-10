@@ -4,9 +4,47 @@ title: My Stats
 ---
 
 <!DOCTYPE html>
-<h1>Total Score</h1>
-<script src="scoreutils.js"></script>
-<h3 id="scorectr">0</h3>
-<script>
-    document.getElementById('scorectr').innerHTML = getScore()
-</script>
+<h1>Color Converter</h1>
+
+<canvas id="cPreview" width="128" height="128"></canvas>
+
+<div class="lampset">
+    <a style="color: red;">Red </a>
+    <button class="ls_r">0</button>
+    <button class="ls_r">0</button>
+    <button class="ls_r">0</button>
+    <button class="ls_r">0</button>
+    <button class="ls_r">0</button>
+    <button class="ls_r">0</button>
+    <button class="ls_r">0</button>
+    <button class="ls_r">0</button>
+    <a>Hex: </a><a id="rHex">00</a>
+</div>
+
+<div class="lampset">
+    <a style="color: lime;">Green </a>
+    <button class="ls_g">0</button>
+    <button class="ls_g">0</button>
+    <button class="ls_g">0</button>
+    <button class="ls_g">0</button>
+    <button class="ls_g">0</button>
+    <button class="ls_g">0</button>
+    <button class="ls_g">0</button>
+    <button class="ls_g">0</button>
+    <a>Hex: </a><a id="gHex">00</a>
+</div>
+
+<div class="lampset">
+    <a style="color: blue;">Blue </a>
+    <button class="ls_b">0</button>
+    <button class="ls_b">0</button>
+    <button class="ls_b">0</button>
+    <button class="ls_b">0</button>
+    <button class="ls_b">0</button>
+    <button class="ls_b">0</button>
+    <button class="ls_b">0</button>
+    <button class="ls_b">0</button>
+    <a>Hex: </a><a id="bHex">00</a>
+</div>
+
+<script src="lampcolors.js"></script>
