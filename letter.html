@@ -15,11 +15,10 @@ title: Letter Game
             font-family: 'Fira Code', monospace;
             background-color: #f0f0f0;
             color: #8d8d8d;
-            text-align: center;
         }
 
         #game-container {
-            max-width: 400px;
+            max-width: 550px;
             margin: 20px auto;
             padding: 20px;
             background-color: #383838;
@@ -33,6 +32,7 @@ title: Letter Game
             font-size: 16px;
             margin: 10px;
             cursor: pointer;
+            font-family: 'Fira Code', monospace;
             background-color: #2b2e30;
             color: #a3e334;
         }
@@ -60,48 +60,40 @@ title: Letter Game
 <body>
 
 <div id="game-container">
-    <!-- Game title -->
+
     <h1>Binary to Letter Game</h1>
     
-    <!-- Instructions about ASCII -->
     <div id="ascii-instructions">
         <p>ASCII (American Standard Code for Information Interchange) is a character encoding standard that assigns numeric codes to represent text characters.</p>
         <p>In this game, you'll be given the binary representation of an ASCII code, and your goal is to guess the corresponding letter.</p>
     </div>
 
-    <!-- Display binary representation -->
     <div id="binary-display"></div>
 
-    <!-- Input for player's guess -->
     <label for="guess-input">Your Guess:</label>
     <input type="text" id="guess-input" maxlength="1" oninput="this.value = this.value.toUpperCase()">
 
-    <!-- Submit button -->
     <button onclick="checkAnswer()">Submit</button>
+    <button onclick="newRound()">New</button>
 
-    <!-- Display result message -->
     <div id="result-message"></div>
 </div>
 
 <script>
     let targetAscii;
 
-    // Function to generate a random ASCII code for an uppercase letter
     function generateRandomAscii() {
         return Math.floor(Math.random() * (90 - 65 + 1)) + 65;
     }
 
-    // Function to convert an ASCII code to binary
     function convertAsciiToBinary(asciiCode) {
         return asciiCode.toString(2);
     }
 
-    // Function to display binary representation to the player
     function displayBinary() {
         document.getElementById('binary-display').textContent = `Binary representation: ${convertAsciiToBinary(targetAscii)}`;
     }
 
-    // Function to start a new round
     function newRound() {
         targetAscii = generateRandomAscii();
         displayBinary();
@@ -109,17 +101,14 @@ title: Letter Game
         resetResultMessage();
     }
 
-    // Function to reset the guess input field
     function resetGuessInput() {
         document.getElementById('guess-input').value = '';
     }
 
-    // Function to reset the result message
     function resetResultMessage() {
         document.getElementById('result-message').textContent = '';
     }
 
-    // Function to check the player's answer
     function checkAnswer() {
         const playerGuess = document.getElementById('guess-input').value;
 
@@ -136,7 +125,6 @@ title: Letter Game
         }
     }
 
-    // Start a new round when the page loads
     newRound();
 </script>
 
