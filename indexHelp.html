@@ -6,7 +6,7 @@ title: 5x5 Binary Practice
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <!-- Set character encoding and viewport settings -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,179 +14,179 @@ title: 5x5 Binary Practice
 
     <!-- Styling for the page -->
     <style>
-      /* Styling for the body of the page */
-      body {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        font-family: 'Fira Code', monospace;
-        color: #a3e334;
-      }
+        /* Styling for the body of the page */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Fira Code', monospace;
+            color: #a3e334;
+        }
 
-      /* Styling for the grid container */
-      .grid-container {
-        display: grid;
-        grid-template-columns: repeat(5, 50px);
-        gap: 5px;
-      }
+        /* Styling for the grid container */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(5, 50px);
+            gap: 5px;
+        }
 
-      /* Styling for the interactive tiles */
-      .tile {
-        width: 50px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        font-weight: normal;
-        font-size: 20px;
-        border-radius: 10px;
-        overflow: hidden;
-        background-color: #383838;
-        color: #a3e334;
-        font-family: 'Fira Code', monospace;
-      }
+        /* Styling for the interactive tiles */
+        .tile {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: normal;
+            font-size: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #383838;
+            color: #a3e334;
+            font-family: 'Fira Code', monospace;
+        }
 
-      /* Styling for active (selected) tiles */
-      .tile.active {
-        background-color: #2b2e30;
-        color: #a3e334;
-        border-radius: 10px;
-        overflow: hidden;
-      }
+        /* Styling for active (selected) tiles */
+        .tile.active {
+            background-color: #2b2e30;
+            color: #a3e334;
+            border-radius: 10px;
+            overflow: hidden;
+        }
 
-      /* Styling for displaying decimal values */
-      .number-display {
-        margin-top: 20px;
-        font-size: 16px;
-        display: none;
-        font-family: 'Fira Code', monospace;
-        color: #a3e334;
-      }
+        /* Styling for displaying decimal values */
+        .number-display {
+            margin-top: 20px;
+            font-size: 16px;
+            display: none;
+            font-family: 'Fira Code', monospace;
+            color: #a3e334;
+        }
 
-      /* Styling for random decimal practice information */
-      .random-decimals {
-        font-size: 16px;
-        margin-bottom: 10px;
-        font-family: 'Fira Code', monospace;
-        color: #a3e334;
-      }
+        /* Styling for random decimal practice information */
+        .random-decimals {
+            font-size: 16px;
+            margin-bottom: 10px;
+            font-family: 'Fira Code', monospace;
+            color: #a3e334;
+        }
 
-      /* Styling for buttons */
-      .submit-button, .new-button {
-        margin-top: 10px;
-        padding: 8px 16px;
-        font-size: 16px;
-        cursor: pointer;
-        background-color: #383838;
-        color: #a3e334;
-        font-family: 'Fira Code', monospace;
-      }
+        /* Styling for buttons */
+        .submit-button, .new-button {
+            margin-top: 10px;
+            padding: 8px 16px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #383838;
+            color: #a3e334;
+            font-family: 'Fira Code', monospace;
+        }
 
-      /* Styling for the "New" button */
-      .new-button {
-        margin-left: 5px;
-      }
+        /* Styling for the "New" button */
+        .new-button {
+            margin-left: 5px;
+        }
     </style>
-  </head>
+</head>
 
-  <body>
-    <!-- Display random decimal values for practice -->
-    <div class="random-decimals" id="randomDecimals"></div>
+<body>
+<!-- Display random decimal values for practice -->
+<div class="random-decimals" id="randomDecimals"></div>
 
-    <!-- Grid container for interactive binary tiles -->
-    <div class="grid-container" id="gridContainer"></div>
+<!-- Grid container for interactive binary tiles -->
+<div class="grid-container" id="gridContainer"></div>
 
-    <!-- Display decimal values when tiles are toggled -->
-    <div class="number-display" id="numberDisplay"></div>
+<!-- Display decimal values when tiles are toggled -->
+<div class="number-display" id="numberDisplay"></div>
 
-    <!-- Button to submit answers and reveal decimal values -->
-    <button class="submit-button" onclick="revealAnswers()">Submit</button>
+<!-- Button to submit answers and reveal decimal values -->
+<button class="submit-button" onclick="revealAnswers()">Submit</button>
 
-    <!-- Button to reset the grid for a new practice session -->
-    <button class="new-button" onclick="resetGrid()">New</button>
+<!-- Button to reset the grid for a new practice session -->
+<button class="new-button" onclick="resetGrid()">New</button>
 
-    <!-- Display correctness percentage after submission -->
-    <div class="percentage-display" id="percentageDisplay"></div>
+<!-- Display correctness percentage after submission -->
+<div class="percentage-display" id="percentageDisplay"></div>
 
-    <!-- JavaScript for interactive functionality -->
-    <script>
-      // Get HTML elements for manipulation
-      const gridContainer = document.getElementById('gridContainer');
-      const numberDisplay = document.getElementById('numberDisplay');
-      const randomDecimals = document.getElementById('randomDecimals');
-      const percentageDisplay = document.getElementById('percentageDisplay');
+<!-- JavaScript for interactive functionality -->
+<script>
+    // Get HTML elements for manipulation
+    const gridContainer = document.getElementById('gridContainer');
+    const numberDisplay = document.getElementById('numberDisplay');
+    const randomDecimals = document.getElementById('randomDecimals');
+    const percentageDisplay = document.getElementById('percentageDisplay');
 
-      // Arrays to store binary values for the grid and uncorrelated practice values
-      let gridValues = Array.from({ length: 5 }, () => Array(5).fill(0));
-      let uncorrelatedValues = Array.from({ length: 5 }, () => Array(5).fill(0));
+    // Arrays to store binary values for the grid and uncorrelated practice values
+    let gridValues = Array.from({length: 5}, () => Array(5).fill(0));
+    let uncorrelatedValues = Array.from({length: 5}, () => Array(5).fill(0));
 
-      // Function to generate a random binary value (0 or 1)
-      function generateRandomValue() {
+    // Function to generate a random binary value (0 or 1)
+    function generateRandomValue() {
         return Math.round(Math.random());
-      }
+    }
 
-      // Function to update the visual representation of the grid
-      function updateGrid() {
+    // Function to update the visual representation of the grid
+    function updateGrid() {
         gridContainer.innerHTML = '';
         gridValues.forEach((row, rowIndex) => {
-          row.forEach((value, colIndex) => {
-            const tile = document.createElement('div');
-            tile.classList.add('tile');
-            if (value === 1) {
-              tile.classList.add('active');
-            }
-            tile.textContent = value.toString();
-            tile.addEventListener('click', () => toggleValue(rowIndex, colIndex));
-            gridContainer.appendChild(tile);
-          });
+            row.forEach((value, colIndex) => {
+                const tile = document.createElement('div');
+                tile.classList.add('tile');
+                if (value === 1) {
+                    tile.classList.add('active');
+                }
+                tile.textContent = value.toString();
+                tile.addEventListener('click', () => toggleValue(rowIndex, colIndex));
+                gridContainer.appendChild(tile);
+            });
         });
-      }
+    }
 
-      // Function to toggle the binary value at a specific grid position
-      function toggleValue(row, col) {
+    // Function to toggle the binary value at a specific grid position
+    function toggleValue(row, col) {
         gridValues[row][col] = 1 - gridValues[row][col];
         updateGrid();
         updateNumberDisplay();
-      }
+    }
 
-      // Function to update the display of decimal values based on the grid
-      function updateNumberDisplay() {
+    // Function to update the display of decimal values based on the grid
+    function updateNumberDisplay() {
         const decimalValues = gridValues.map(row => parseInt(row.join(''), 2));
         numberDisplay.textContent = `Decimal Values: ${decimalValues.join(', ')}`;
-      }
+    }
 
-      // Function to initialize the grid with random binary values
-      function initializeGrid() {
-        gridValues = Array.from({ length: 5 }, () => Array.from({ length: 5 }, () => 0));
-        uncorrelatedValues = Array.from({ length: 5 }, () => Array.from({ length: 5 }, () => generateRandomValue()));
+    // Function to initialize the grid with random binary values
+    function initializeGrid() {
+        gridValues = Array.from({length: 5}, () => Array.from({length: 5}, () => 0));
+        uncorrelatedValues = Array.from({length: 5}, () => Array.from({length: 5}, () => generateRandomValue()));
         updateGrid();
         updateNumberDisplay();
-      }
+    }
 
-      // Function to generate random decimal values for practice
-      function generateRandomDecimals() {
-        const randomDecimalsArray = Array.from({ length: 5 }, () => Math.floor(Math.random() * 31) + 1);
+    // Function to generate random decimal values for practice
+    function generateRandomDecimals() {
+        const randomDecimalsArray = Array.from({length: 5}, () => Math.floor(Math.random() * 31) + 1);
         randomDecimals.textContent = `Random Decimals: ${randomDecimalsArray.join(', ')}`;
-      }
+    }
 
-      // Function to reveal decimal values after submission
-      function revealAnswers() {
+    // Function to reveal decimal values after submission
+    function revealAnswers() {
         updateNumberDisplay();
         numberDisplay.style.display = numberDisplay.style.display === 'none' ? 'block' : 'none';
-      }
+    }
 
-      // Function to reset the grid for a new practice session
-      function resetGrid() {
+    // Function to reset the grid for a new practice session
+    function resetGrid() {
         initializeGrid();
         generateRandomDecimals();
         numberDisplay.style.display = 'none';
         percentageDisplay.textContent = '';
-      }
+    }
 
-      // Initial setup when the page loads
-      initializeGrid();
-      generateRandomDecimals();
-    </script>
-  </body>
+    // Initial setup when the page loads
+    initializeGrid();
+    generateRandomDecimals();
+</script>
+</body>
 </html>
