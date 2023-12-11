@@ -52,7 +52,7 @@ title: Letter Game
         #result-message {
             font-size: 18px;
             margin-top: 10px;
-            color: #333;
+            color: #929292;
         }
     </style>
 
@@ -62,9 +62,17 @@ title: Letter Game
     
     <div id="ascii-instructions">
         <p>ASCII (American Standard Code for Information Interchange) is a character encoding standard that assigns numeric codes to represent text characters.</p>
-        <p>In this game, you'll be given the binary representation of an ASCII code, and your goal is to guess the corresponding letter.</p>
+        <p>In this game, you'll be presented with the binary representation of an ASCII code for an uppercase letter ('A' to 'Z'). The pattern for ASCII codes is as follows:
+            <ul>
+                <li>The ASCII code for 'A' is 65.</li>
+                <li>Subsequent uppercase letters follow in sequential order, with 'B' being 66, 'C' being 67, and so on.</li>
+                <li>Each ASCII character is represented by a 7-bit binary number.</li>
+                <li>The most significant bit (leftmost) is usually 0.</li>
+            </ul>
+        </p>
+        <p>Your task is to understand this pattern and become familiar with how ASCII codes are represented in binary.</p>
     </div>
-
+    
     <div id="binary-display"></div>
 
     <label for="guess-input">Your Guess:</label>
